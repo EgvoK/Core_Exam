@@ -19,3 +19,16 @@
 #     - Отображение минимального расхода в указанном периоде времени.
 # Правильное использование паттернов проектирование, принципов SOLID, механизмов тестирования при реализации задания.
 
+from controller import Controller
+
+
+class Main:
+    @staticmethod
+    def start():
+        controller = Controller()
+        controller.menu()
+
+
+if __name__ == "__main__":
+    on = Main()
+    on.start()

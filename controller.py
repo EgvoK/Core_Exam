@@ -2,6 +2,7 @@ import os
 
 
 from model import Model
+from view import *
 
 
 def cls():
@@ -22,6 +23,10 @@ class Controller:
     def __init__(self):
         self.model = Model()
 
+    def show_menu(self):
+        MenuDisplay.display(self.OPTIONS)
+
     def menu(self):
         cls()
-        pass
+        self.show_menu()
+
