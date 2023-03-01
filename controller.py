@@ -1,6 +1,7 @@
 import os
+import sys
 
-
+import view
 from model import Model
 from view import *
 
@@ -11,8 +12,8 @@ def cls():
 
 class Controller:
     OPTIONS = {
-        '1': 'Show all expenditures',
-        '2': 'Add new expenditure',
+        '1': 'Show all costs',
+        '2': 'Add new cost',
         '3': 'Show reports',
         '4': 'Export to file',
         '5': 'Import from file',
@@ -29,4 +30,36 @@ class Controller:
     def menu(self):
         cls()
         self.show_menu()
+
+        while True:
+            option = input("\nEnter the option number: ")
+            cls()
+            self.show_menu()
+            if option in self.OPTIONS.keys():
+                if option == "1":
+                    view.ExpendituresDisplay.display()
+                    self.model.get_expenditures()
+
+                if option == "2":
+                    pass
+
+                if option == "3":
+                    pass
+
+                if option == "4":
+                    pass
+
+                if option == "5":
+                    pass
+
+                if option == "6":
+                    pass
+
+                if option == "0":
+                    print("Exit...")
+                    sys.exit()
+
+            else:
+                print("Error! Incorrect option number!")
+
 
