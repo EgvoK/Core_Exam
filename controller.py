@@ -39,9 +39,12 @@ class Controller:
                 if option == "1":
                     view.ExpendituresDisplay.display()
                     self.model.get_expenditures()
+                    self.show_menu()
 
                 if option == "2":
-                    pass
+                    self.model.add_expenditure()
+                    view.ExpenditureAddDisplay.display()
+                    self.show_menu()
 
                 if option == "3":
                     pass

@@ -10,6 +10,7 @@ create table expenditures(
     id integer primary key autoincrement,
     expenditure_name text not null,
     expenditure_date text not null,
-    category_id integer,
+    amount integer not null,
+    category_id integer not null,
     foreign key (category_id) references categories(id)
 );
