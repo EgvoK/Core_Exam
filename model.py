@@ -133,6 +133,8 @@ class Model:
         categories = connection.execute('select * from categories').fetchall()
         report = connection.execute('select category_id, max(amount) from expenditures group by category_id')
 
+        print(f"{config.SEPARATOR}\nREPORT - MAX IN EACH CATEGORIES:\n{config.SEPARATOR}")
+
         for row in report:
             counter += 1
             for category in categories:
@@ -149,6 +151,8 @@ class Model:
         categories = connection.execute('select * from categories').fetchall()
         report = connection.execute('select category_id, min(amount) from expenditures group by category_id')
 
+        print(f"{config.SEPARATOR}\nREPORT - MIN IN EACH CATEGORIES:\n{config.SEPARATOR}")
+
         for row in report:
             counter += 1
             for category in categories:
@@ -157,12 +161,69 @@ class Model:
                     category_name = category[1]
             print(f"{counter}. {category_name} - {row[1]}$")
 
-# SELECT
-#    stud AS [Student],
-#    First(idp) AS [id_prepod],
-#    Max(cnt) AS [Counter]
-# FROM T3
-# GROUP BY T3.stud;
+    @staticmethod
+    def get_max_in_period():
+        connection = get_db_connection()
+
+        while True:
+            date = input("Enter cost date (YYYY-MM-DD): ")
+            validator = re.compile(r"^2[0-9]{3}-[0-1][0-9]-[0-3][0-9]$")
+            val_date = validator.match(date)
+            if val_date is None:
+                print("Enter correct date!")
+            else:
+                search_date = date
+                break
+
+        print(f"{config.SEPARATOR}\nREPORT - MAX IN THE PERIOD:\n{config.SEPARATOR}")
+
+        valid_dates = []
+        dates = connection.execute('select expenditure_date from expenditures group by expenditure_date')
+        for item in dates:
+            valid_dates.append(item[0])
+
+        if search_date in valid_dates:
+            report = connection.execute('''select expenditure_name, expenditure_date, max(amount) from expenditures 
+                                    where expenditure_date=? group by expenditure_date''', (search_date,))
+
+            for row in report:
+                print(f"1. {row[0]} - {row[1]} - {row[2]}$")
+
+        else:
+            print(f"{config.SEPARATOR}\nCosts in {search_date} not found!")
+
+    @staticmethod
+    def get_min_in_period():
+        connection = get_db_connection()
+
+        while True:
+            date = input("Enter cost date (YYYY-MM-DD): ")
+            validator = re.compile(r"^2[0-9]{3}-[0-1][0-9]-[0-3][0-9]$")
+            val_date = validator.match(date)
+            if val_date is None:
+                print("Enter correct date!")
+            else:
+                search_date = date
+                break
+
+        print(f"{config.SEPARATOR}\nREPORT - MIN IN THE PERIOD:\n{config.SEPARATOR}")
+
+        valid_dates = []
+        dates = connection.execute('select expenditure_date from expenditures group by expenditure_date')
+        for item in dates:
+            valid_dates.append(item[0])
+
+        if search_date in valid_dates:
+            report = connection.execute('''select expenditure_name, expenditure_date, min(amount) from expenditures 
+                                    where expenditure_date=? group by expenditure_date''', (search_date,))
+
+            for row in report:
+                print(f"1. {row[0]} - {row[1]} - {row[2]}$")
+
+        else:
+            print(f"{config.SEPARATOR}\nCosts in {search_date} not found!")
+
+
 
 
 

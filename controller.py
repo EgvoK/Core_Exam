@@ -74,16 +74,17 @@ class Controller:
                                 self.show_report_menu()
 
                             if report_option == "5":
-                                pass
+                                self.model.get_max_in_period()
+                                self.show_report_menu()
 
                             if report_option == "6":
                                 self.model.get_min_in_categories()
                                 self.show_report_menu()
 
                             if report_option == "7":
-                                pass
-                            if report_option == "8":
-                                pass
+                                self.model.get_min_in_period()
+                                self.show_report_menu()
+
                             if report_option == "0":
                                 self.show_menu()
                                 break
