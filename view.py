@@ -4,11 +4,10 @@ import config
 class MenuDisplay:
     @staticmethod
     def display(option):
-        print(f"{config.SEPARATOR}\nWELCOME TO COST ACCOUNTING\n{config.SEPARATOR}"
+        print(f"{config.SEPARATOR}\nCOST ACCOUNTING APPLICATION\n{config.SEPARATOR}"
               f"\nThe following commands are available: ")
         for key, value in option.items():
             print(f"{key}. {value}")
-        # print("\n")
 
 
 class ExpendituresDisplay:
@@ -22,5 +21,10 @@ class ExpenditureAddDisplay:
     @staticmethod
     def display():
         print(f"{config.SEPARATOR}\nNew cost has been added!")
+
+
+
+
+
 
 

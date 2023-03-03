@@ -1,6 +1,8 @@
 import sqlite3
 import re
 
+import config
+
 
 def get_db_connection():
     connection = sqlite3.connect('database.db')
@@ -80,6 +82,87 @@ class Model:
                            'values (?, ?, ?, ?)', (expenditure_name, expenditure_date, amount, category_id))
         connection.commit()
         connection.close()
+
+    @staticmethod
+    def get_group_by_category():
+        counter = 0
+
+        connection = get_db_connection()
+        categories = connection.execute('select * from categories').fetchall()
+        report = connection.execute('select * from expenditures group by category_id')
+
+        print(f"{config.SEPARATOR}\nREPORT - GROUP BY CATEGORY:\n{config.SEPARATOR}")
+        for row in report:
+            counter += 1
+            for category in categories:
+                category_id = category[0]
+                if category_id == row[4]:
+                    category_name = category[1]
+
+            print(f"{counter}. {category_name} - {row[3]}$")
+
+    @staticmethod
+    def get_group_by_name():
+        counter = 0
+
+        connection = get_db_connection()
+        report = connection.execute('select * from expenditures group by expenditure_name')
+
+        print(f"{config.SEPARATOR}\nREPORT - GROUP BY NAME:\n{config.SEPARATOR}")
+        for row in report:
+            counter += 1
+            print(f"{counter}. {row[1]} - {row[3]}$")
+
+    @staticmethod
+    def get_group_by_date():
+        counter = 0
+
+        connection = get_db_connection()
+        report = connection.execute('select * from expenditures group by expenditure_date')
+
+        print(f"{config.SEPARATOR}\nREPORT - GROUP BY DATE:\n{config.SEPARATOR}")
+        for row in report:
+            counter += 1
+            print(f"{counter}. {row[2]} - {row[3]}$")
+
+    @staticmethod
+    def get_max_in_categories():
+        counter = 0
+
+        connection = get_db_connection()
+        categories = connection.execute('select * from categories').fetchall()
+        report = connection.execute('select category_id, max(amount) from expenditures group by category_id')
+
+        for row in report:
+            counter += 1
+            for category in categories:
+                category_id = category[0]
+                if category_id == row[0]:
+                    category_name = category[1]
+            print(f"{counter}. {category_name} - {row[1]}$")
+
+    @staticmethod
+    def get_min_in_categories():
+        counter = 0
+
+        connection = get_db_connection()
+        categories = connection.execute('select * from categories').fetchall()
+        report = connection.execute('select category_id, min(amount) from expenditures group by category_id')
+
+        for row in report:
+            counter += 1
+            for category in categories:
+                category_id = category[0]
+                if category_id == row[0]:
+                    category_name = category[1]
+            print(f"{counter}. {category_name} - {row[1]}$")
+
+# SELECT
+#    stud AS [Student],
+#    First(idp) AS [id_prepod],
+#    Max(cnt) AS [Counter]
+# FROM T3
+# GROUP BY T3.stud;
 
 
 
