@@ -3,6 +3,7 @@ import re
 import csv
 
 import config
+import view
 
 
 def get_db_connection():
@@ -90,41 +91,41 @@ class Model:
 
         connection = get_db_connection()
         categories = connection.execute('select * from categories').fetchall()
-        report = connection.execute('select * from expenditures group by category_id')
+        report = connection.execute('select category_id, sum(amount) from expenditures group by category_id')
 
         print(f"{config.SEPARATOR}\nREPORT - GROUP BY CATEGORY:\n{config.SEPARATOR}")
         for row in report:
             counter += 1
             for category in categories:
                 category_id = category[0]
-                if category_id == row[4]:
+                if category_id == row[0]:
                     category_name = category[1]
 
-            print(f"{counter}. {category_name} - {row[3]}$")
+            print(f"{counter}. {category_name} - {row[1]}$")
 
     @staticmethod
     def get_group_by_name():
         counter = 0
 
         connection = get_db_connection()
-        report = connection.execute('select * from expenditures group by expenditure_name')
+        report = connection.execute('select expenditure_name, sum(amount) from expenditures group by expenditure_name')
 
         print(f"{config.SEPARATOR}\nREPORT - GROUP BY NAME:\n{config.SEPARATOR}")
         for row in report:
             counter += 1
-            print(f"{counter}. {row[1]} - {row[3]}$")
+            print(f"{counter}. {row[0]} - {row[1]}$")
 
     @staticmethod
     def get_group_by_date():
         counter = 0
 
         connection = get_db_connection()
-        report = connection.execute('select * from expenditures group by expenditure_date')
+        report = connection.execute('select expenditure_date, sum(amount) from expenditures group by expenditure_date')
 
         print(f"{config.SEPARATOR}\nREPORT - GROUP BY DATE:\n{config.SEPARATOR}")
         for row in report:
             counter += 1
-            print(f"{counter}. {row[2]} - {row[3]}$")
+            print(f"{counter}. {row[0]} - {row[1]}$")
 
     @staticmethod
     def get_max_in_categories():
@@ -286,14 +287,21 @@ class Model:
                 category_name = category[1]
                 list_id.append(category_id)
                 print(f"{category_id} - {category_name}")
+            print("0 - Back to main menu")
 
             del_id = input("Enter the category number from the list above: ")
-            if del_id in list_id:
-                print("Selected category is not empty!")
+            if int(del_id) in not_empty_categories:
+                print(f"{config.SEPARATOR}\nSelected category is not empty!")
+                break
+
+            if del_id == "0":
+                break
+
             else:
                 connection.execute("delete from categories where id = ?", (del_id,))
                 connection.commit()
                 connection.close()
+                view.DelCategory.display()
                 break
 
 

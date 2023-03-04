@@ -14,7 +14,7 @@ class ExpendituresDisplay:
     @staticmethod
     def display():
         print(f"{config.SEPARATOR}\nLIST OF COST\n{config.SEPARATOR}")
-        print("#. Name - Date - Category")
+        print("#. Name - Date - Category - Amount")
 
 
 class ExpenditureAddDisplay:

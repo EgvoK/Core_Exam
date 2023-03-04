@@ -119,13 +119,14 @@ class Controller:
 
                             if categories_setting_option == "2":
                                 self.model.del_category()
-                                view.DelCategory.display()
                                 self.show_menu()
                                 break
 
                             if categories_setting_option == "0":
                                 self.show_menu()
                                 break
+                        else:
+                            print("Error! Incorrect option number!")
 
                 if option == "0":
                     print(f"{config.SEPARATOR}\nExit...")
