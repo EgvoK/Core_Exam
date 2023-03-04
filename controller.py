@@ -97,7 +97,7 @@ class Controller:
                     self.show_menu()
 
                 if option == "5":
-                    pass
+                    self.model.import_from_csv()
 
                 if option == "6":
                     pass

@@ -231,17 +231,39 @@ class Model:
         cursor.execute("select expenditure_name, expenditure_date, category_name, amount "
                        "from expenditures left join categories on categories.id = expenditures.category_id;")
 
-        with open('output.csv', 'w', newline='') as csv_file:
+        with open('export.csv', 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
             csv_writer.writerow([i[0] for i in cursor.description])
             csv_writer.writerows(cursor)
         connection.close()
 
+    @staticmethod
+    def import_from_csv():
+        connection = get_db_connection()
+        cursor = connection.cursor()
 
-# sql = '''SELECT StudentID, StudentName, AdvisorName
-# FROM Student
-# INNER JOIN Advisor
-# ON Student.AdvisorID = Advisor.AdvisorID;'''
+        with open('import.csv', 'r') as file:
+            dr = csv.DictReader(file)
+            data = [(i['name'], i['date'], i['category_id'], i['amount']) for i in dr]
+
+        cursor.executemany('insert into expenditures (expenditure_name, expenditure_date, category_id, amount) '
+                           'values (?, ?, ?, ?);', data)
+        connection.commit()
+        connection.close()
+
+
+# con = sqlite3.connect(":memory:") # change to 'sqlite:///your_filename.db'
+# cur = con.cursor()
+# cur.execute("CREATE TABLE t (col1, col2);") # use your column names here
+#
+# with open('data.csv','r') as fin: # `with` statement available in 2.5+
+#     # csv.DictReader uses first line in file for column headings by default
+#     dr = csv.DictReader(fin) # comma is default delimiter
+#     to_db = [(i['col1'], i['col2']) for i in dr]
+#
+# cur.executemany("INSERT INTO t (col1, col2) VALUES (?, ?);", to_db)
+# con.commit()
+# con.close()
 
 
 
