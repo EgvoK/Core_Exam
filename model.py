@@ -1,5 +1,6 @@
 import sqlite3
 import re
+import csv
 
 import config
 
@@ -223,6 +224,24 @@ class Model:
         else:
             print(f"{config.SEPARATOR}\nCosts in {search_date} not found!")
 
+    @staticmethod
+    def export_to_csv():
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("select expenditure_name, expenditure_date, category_name, amount "
+                       "from expenditures left join categories on categories.id = expenditures.category_id;")
+
+        with open('output.csv', 'w', newline='') as csv_file:
+            csv_writer = csv.writer(csv_file)
+            csv_writer.writerow([i[0] for i in cursor.description])
+            csv_writer.writerows(cursor)
+        connection.close()
+
+
+# sql = '''SELECT StudentID, StudentName, AdvisorName
+# FROM Student
+# INNER JOIN Advisor
+# ON Student.AdvisorID = Advisor.AdvisorID;'''
 
 
 

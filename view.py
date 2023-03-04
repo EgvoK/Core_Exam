@@ -23,6 +23,12 @@ class ExpenditureAddDisplay:
         print(f"{config.SEPARATOR}\nNew cost has been added!")
 
 
+class ExportToCSV:
+    @staticmethod
+    def display():
+        print(f"{config.SEPARATOR}\nExport to CSV-file is completed!")
+
+
 
 
 

@@ -92,7 +92,9 @@ class Controller:
                             print("Error! Incorrect option number!")
 
                 if option == "4":
-                    pass
+                    self.model.export_to_csv()
+                    view.ExportToCSV.display()
+                    self.show_menu()
 
                 if option == "5":
                     pass
