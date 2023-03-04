@@ -32,6 +32,10 @@ class Controller:
     def show_report_menu():
         MenuDisplay.display(config.reports)
 
+    @staticmethod
+    def show_categories_setting():
+        MenuDisplay.display(config.categories_settings)
+
     def menu(self):
         cls()
         self.show_menu()
@@ -98,12 +102,33 @@ class Controller:
 
                 if option == "5":
                     self.model.import_from_csv()
+                    view.ImportFromCSV.display()
+                    self.show_menu()
 
                 if option == "6":
-                    pass
+                    self.show_categories_setting()
+                    while True:
+                        categories_setting_option = input("\nEnter the option number: ")
+                        if categories_setting_option in config.categories_settings.keys():
+
+                            if categories_setting_option == "1":
+                                self.model.add_category()
+                                view.AddCategory.display()
+                                self.show_menu()
+                                break
+
+                            if categories_setting_option == "2":
+                                self.model.del_category()
+                                view.DelCategory.display()
+                                self.show_menu()
+                                break
+
+                            if categories_setting_option == "0":
+                                self.show_menu()
+                                break
 
                 if option == "0":
-                    print("Exit...")
+                    print(f"{config.SEPARATOR}\nExit...")
                     sys.exit()
 
             else:

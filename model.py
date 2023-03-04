@@ -195,6 +195,7 @@ class Model:
 
     @staticmethod
     def get_min_in_period():
+        valid_dates = []
         connection = get_db_connection()
 
         while True:
@@ -209,7 +210,6 @@ class Model:
 
         print(f"{config.SEPARATOR}\nREPORT - MIN IN THE PERIOD:\n{config.SEPARATOR}")
 
-        valid_dates = []
         dates = connection.execute('select expenditure_date from expenditures group by expenditure_date')
         for item in dates:
             valid_dates.append(item[0])
@@ -251,19 +251,54 @@ class Model:
         connection.commit()
         connection.close()
 
+    @staticmethod
+    def add_category():
+        valid_categories = []
+        connection = get_db_connection()
+        categories = connection.execute('select * from categories').fetchall()
 
-# con = sqlite3.connect(":memory:") # change to 'sqlite:///your_filename.db'
-# cur = con.cursor()
-# cur.execute("CREATE TABLE t (col1, col2);") # use your column names here
-#
-# with open('data.csv','r') as fin: # `with` statement available in 2.5+
-#     # csv.DictReader uses first line in file for column headings by default
-#     dr = csv.DictReader(fin) # comma is default delimiter
-#     to_db = [(i['col1'], i['col2']) for i in dr]
-#
-# cur.executemany("INSERT INTO t (col1, col2) VALUES (?, ?);", to_db)
-# con.commit()
-# con.close()
+        while True:
+            name = input("Enter category name: ")
+            for category in categories:
+                valid_categories.append(category[1])
+
+            if name in valid_categories:
+                print(f"{config.SEPARATOR}\nThis category already exists!\n{config.SEPARATOR}")
+            else:
+                connection.execute("insert into categories(category_name) values (?);", (name,))
+                connection.commit()
+                connection.close()
+                break
+
+    @staticmethod
+    def del_category():
+        not_empty_categories = []
+        connection = get_db_connection()
+        category_ids = connection.execute('select category_id from expenditures').fetchall()
+        categories = connection.execute('select * from categories').fetchall()
+        for item in category_ids:
+            not_empty_categories.append(item[0])
+
+        while True:
+            list_id = []
+            for category in categories:
+                category_id = category[0]
+                category_name = category[1]
+                list_id.append(category_id)
+                print(f"{category_id} - {category_name}")
+
+            del_id = input("Enter the category number from the list above: ")
+            if del_id in list_id:
+                print("Selected category is not empty!")
+            else:
+                connection.execute("delete from categories where id = ?", (del_id,))
+                connection.commit()
+                connection.close()
+                break
+
+
+
+
 
 
 

@@ -10,3 +10,9 @@ reports = {
     '7': 'Show min costs in the period',
     '0': 'Back to main menu'
 }
+
+categories_settings = {
+    '1': 'Add new category',
+    '2': 'Delete category',
+    '0': 'Back to main menu'
+}

@@ -29,6 +29,22 @@ class ExportToCSV:
         print(f"{config.SEPARATOR}\nExport to CSV-file is completed!")
 
 
+class ImportFromCSV:
+    @staticmethod
+    def display():
+        print(f"{config.SEPARATOR}\nImport from CSV-file is completed!")
+
+
+class AddCategory:
+    @staticmethod
+    def display():
+        print(f"{config.SEPARATOR}\nCategory is successfully added!")
+
+
+class DelCategory:
+    @staticmethod
+    def display():
+        print(f"{config.SEPARATOR}\nCategory has been deleted!")
 
 
 
