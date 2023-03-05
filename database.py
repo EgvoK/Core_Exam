@@ -22,9 +22,6 @@ try:
     cur.execute("insert into categories(category_name) values ('Transport')")
     cur.execute("insert into categories(category_name) values ('Miscellaneous')")
 
-    cur.execute("insert into expenditures (expenditure_name, expenditure_date, amount, category_id) values (?, ?, ?, ?)",
-                ("Example", "2023-02-25", 1, 9))
-
     print("Entries added successfully!")
     connection.commit()
     cur.close()

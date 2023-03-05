@@ -45,8 +45,3 @@ class DelCategory:
     @staticmethod
     def display():
         print(f"{config.SEPARATOR}\nCategory has been deleted!")
-
-
-
-
-
